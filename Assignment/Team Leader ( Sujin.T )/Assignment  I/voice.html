@@ -1,0 +1,76 @@
+const btn = document.querySelector('.talk');
+const content = document.querySelector('.content');
+const greetings = [
+				'If you are good im good to 😉', 
+				'Im doin alright', 
+				'Im tired 😴'
+];
+const weather = [
+				'Ask the weatherman!', 
+				'I recommend checking your phone or the news ' 
+				
+];
+const name = [
+	'My name is techwaala', 
+	'its techwaala, because I love to code!'
+];
+const hello = [
+	'Why hello! How are you doing today?', 
+	'Hey there How are you?'
+]
+const hru = [
+	'thats great!', 
+	'Im so sorry to hear that', 
+        'Feel better soon!'
+]
+const SpeechRecognition = 
+	window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+
+recognition.onstart = function() {
+	console.log('voice is activated speak into the mic');
+};
+recognition.onresult = function(event) {
+	const current = event.resultIndex;
+	
+	const transcript = event.results[current][0].transcript;
+	content.textContent = transcript;
+	readOutLoud(transcript);
+}
+
+btn.addEventListener('click', () => {
+	recognition.start();
+});
+
+function readOutLoud(message) {
+const speech = new SpeechSynthesisUtterance();
+	speech.text = 'I dont know what you said';
+	if(message.includes('how are you')) {
+		 const finalText = 
+		 greetings[Math.floor(Math.random() * greetings.length)];
+		 speech.text = finalText;
+		
+	} 
+	if(['hey', 'hi', 'hello', 'hi there', 'hey there', 'hi techwala', 'hey techwala','hello techwala']
+	.some(word => message.includes(word))) {
+    const finalText = hello[Math.floor(Math.random() * hello.length)];
+    speech.text = finalText;
+	
+}
+	if(['whats your name', 'your name']
+	.some(word => message.includes(word))) {
+    const finalText = name[Math.floor(Math.random() * name.length)];
+    speech.text = finalText;
+}
+if(['how\'s the weather', 'what\'s the weather like', 'is it sunny', 'is it raining', 'is it cloudy', 'is it snowing']
+	.some(word => message.includes(word))) {
+    const finalText = weather[Math.floor(Math.random() * weather.length)];
+    speech.text = finalText;
+}
+	
+	speech.volume = 1;
+	speech.rate = 1;
+	speech.pitch = 1;
+	window.speechSynthesis.speak(speech);
+		
+	} 
